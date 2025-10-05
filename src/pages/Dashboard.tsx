@@ -31,8 +31,8 @@ const Dashboard = () => {
         setEvents(data);
       } catch (error: any) {
         toast({
-          title: "Erro",
-          description: "Não foi possível carregar os eventos",
+          title: "Error",
+          description: "Unable to load events",
           variant: "destructive",
         });
       } finally {
@@ -87,7 +87,7 @@ const Dashboard = () => {
               className="border-primary/20 hover:bg-primary/10"
             >
               <MessageSquare className="mr-2 h-4 w-4" />
-              Agente IA
+              AI Agent
             </Button>
             <Button
               variant="outline"
@@ -95,7 +95,7 @@ const Dashboard = () => {
               className="border-primary/20 hover:bg-destructive/10"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              Sair
+              Logout
             </Button>
           </div>
         </div>
@@ -103,9 +103,9 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8 animate-fade-in">
-          <h2 className="text-3xl font-bold mb-2">Dashboard de Alertas</h2>
+          <h2 className="text-3xl font-bold mb-2">Alerts Dashboard</h2>
           <p className="text-muted-foreground">
-            Monitore riscos de desastres naturais em tempo real
+            Monitor natural disaster risks in real-time
           </p>
         </div>
 
@@ -128,14 +128,14 @@ const Dashboard = () => {
                       variant={severity === "high" ? "destructive" : "secondary"}
                       className="animate-glow-pulse"
                     >
-                      {severity === "high" ? "Alto" : severity === "medium" ? "Médio" : "Baixo"}
+                      {severity === "high" ? "High" : severity === "medium" ? "Medium" : "Low"}
                     </Badge>
                   </div>
                   <CardTitle className="mt-4 text-lg line-clamp-2">{event.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-2">
-                    Categoria: {event.categories[0]?.title}
+                    Category: {event.categories[0]?.title}
                   </p>
                   {latestGeometry?.magnitudeValue && (
                     <p className="text-sm text-muted-foreground mb-2">
@@ -143,7 +143,7 @@ const Dashboard = () => {
                     </p>
                   )}
                   <p className="text-xs text-muted-foreground">
-                    Última atualização: {new Date(latestGeometry?.date).toLocaleDateString('pt-BR')}
+                    Last updated: {new Date(latestGeometry?.date).toLocaleDateString('en-US')}
                   </p>
                   <Button 
                     className="w-full mt-4 bg-primary hover:bg-primary-glow text-background"
@@ -152,7 +152,7 @@ const Dashboard = () => {
                       setDialogOpen(true);
                     }}
                   >
-                    Ver Detalhes
+                    View Details
                   </Button>
                 </CardContent>
               </Card>
@@ -164,7 +164,7 @@ const Dashboard = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <AlertTriangle className="h-6 w-6 text-warning" />
-              Mapa de Alertas Interativo
+              Interactive Alerts Map
             </CardTitle>
           </CardHeader>
           <CardContent>

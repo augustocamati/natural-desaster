@@ -27,22 +27,22 @@ const Auth = () => {
       if (isLogin) {
         await signIn(email, password);
         toast({
-          title: "Login realizado!",
-          description: "Bem-vindo de volta",
+          title: "Logged in!",
+          description: "Welcome back",
         });
         navigate("/dashboard");
       } else {
         await signUp(name, email, password, location);
         toast({
-          title: "Conta criada!",
-          description: "Bem-vindo ao Natural Disasters",
+          title: "Account created!",
+          description: "Welcome to Natural Disasters",
         });
         navigate("/dashboard");
       }
     } catch (error: any) {
       toast({
-        title: "Erro",
-        description: error.response?.data?.message || error.message || "Erro ao autenticar",
+        title: "Error",
+        description: error.response?.data?.message || error.message || "Authentication error",
         variant: "destructive",
       });
     } finally {
@@ -66,7 +66,7 @@ const Auth = () => {
             Natural Disasters
           </CardTitle>
           <CardDescription className="text-center">
-            {isLogin ? "Entre na sua conta" : "Crie sua conta"}
+            {isLogin ? "Sign in to your account" : "Create your account"}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -74,11 +74,11 @@ const Auth = () => {
             {!isLogin && (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="name">Nome</Label>
+                  <Label htmlFor="name">Name</Label>
                   <Input
                     id="name"
                     type="text"
-                    placeholder="Seu nome completo"
+                    placeholder="Your full name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
@@ -86,11 +86,11 @@ const Auth = () => {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="location">Localização</Label>
+                  <Label htmlFor="location">Location</Label>
                   <Input
                     id="location"
                     type="text"
-                    placeholder="Cidade, País"
+                    placeholder="City, Country"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     required
@@ -104,7 +104,7 @@ const Auth = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="seu@email.com"
+                placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -112,7 +112,7 @@ const Auth = () => {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Senha</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -128,7 +128,7 @@ const Auth = () => {
               className="w-full bg-primary hover:bg-primary-glow text-background font-semibold"
               disabled={loading}
             >
-              {loading ? "Carregando..." : isLogin ? "Entrar" : "Criar Conta"}
+              {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
             </Button>
           </form>
           <div className="mt-4 text-center">
@@ -136,7 +136,7 @@ const Auth = () => {
               onClick={() => setIsLogin(!isLogin)}
               className="text-sm text-muted-foreground hover:text-primary transition-colors"
             >
-              {isLogin ? "Não tem conta? Cadastre-se" : "Já tem conta? Faça login"}
+              {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
             </button>
           </div>
         </CardContent>

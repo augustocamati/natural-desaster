@@ -55,8 +55,8 @@ const Chat = () => {
       ]);
     } catch (error: any) {
       toast({
-        title: "Erro",
-        description: error.message || "Erro ao enviar mensagem",
+        title: "Error",
+        description: error.message || "Error sending message",
         variant: "destructive",
       });
     } finally {
@@ -76,7 +76,7 @@ const Chat = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
           <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary-glow bg-clip-text text-transparent">
-            Agente de Proteção IA
+            AI Protection Agent
           </h1>
         </div>
       </nav>
@@ -86,9 +86,9 @@ const Chat = () => {
           {messages.length === 0 && (
             <Card className="p-8 text-center border-primary/20 bg-card/80 backdrop-blur-sm animate-scale-in">
               <Bot className="h-12 w-12 text-primary mx-auto mb-4 animate-glow-pulse" />
-              <h2 className="text-xl font-bold mb-2">Como posso ajudar?</h2>
+              <h2 className="text-xl font-bold mb-2">How can I help?</h2>
               <p className="text-muted-foreground">
-                Pergunte sobre checklists de emergência, rotas de fuga ou informações sobre abrigos
+                Ask about emergency checklists, evacuation routes, or shelter information
               </p>
             </Card>
           )}
@@ -128,7 +128,7 @@ const Chat = () => {
                 <Bot className="h-5 w-5 text-primary animate-pulse" />
               </div>
               <Card className="max-w-[80%] p-4 bg-card/80 backdrop-blur-sm border-primary/20">
-                <p className="text-sm text-muted-foreground">Pensando...</p>
+                <p className="text-sm text-muted-foreground">Thinking...</p>
               </Card>
             </div>
           )}
@@ -140,7 +140,7 @@ const Chat = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={(e) => e.key === "Enter" && sendMessage()}
-            placeholder="Digite sua pergunta..."
+            placeholder="Type your question..."
             disabled={loading}
             className="bg-card/80 border-primary/20 focus:border-primary"
           />

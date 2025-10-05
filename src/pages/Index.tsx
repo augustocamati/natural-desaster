@@ -9,23 +9,23 @@ const Index = () => {
   const features = [
     {
       icon: AlertTriangle,
-      title: "Alertas em Tempo Real",
-      description: "Receba notificações instantâneas sobre riscos de desastres naturais na sua região",
+      title: "Real-Time Alerts",
+      description: "Receive instant notifications about natural disaster risks in your region",
     },
     {
       icon: MessageSquare,
-      title: "Agente IA Inteligente",
-      description: "Chatbot interativo com checklists personalizados e orientações de proteção",
+      title: "Smart AI Agent",
+      description: "Interactive chatbot with personalized checklists and protection guidance",
     },
     {
       icon: MapPin,
-      title: "Localização Personalizada",
-      description: "Alertas geo-referenciados para seu continente, país e estado",
+      title: "Personalized Location",
+      description: "Geo-referenced alerts for your continent, country and state",
     },
     {
       icon: BarChart3,
-      title: "Previsão com IA",
-      description: "Motor de previsão baseado em dados da NASA e machine learning",
+      title: "AI-Powered Prediction",
+      description: "Prediction engine based on NASA data and machine learning",
     },
   ];
 
@@ -59,7 +59,7 @@ const Index = () => {
                 onClick={() => navigate("/auth")}
                 className="bg-primary hover:bg-primary-glow text-background font-semibold"
               >
-                Começar Agora
+                Get Started
               </Button>
             </div>
           </div>
@@ -74,36 +74,36 @@ const Index = () => {
 
             <h1 className="text-5xl md:text-7xl font-bold leading-tight">
               <span className="bg-gradient-to-r from-primary via-primary-glow to-accent bg-clip-text text-transparent">
-                Previsão e Proteção
+                Smart Prediction
               </span>
               <br />
-              Inteligente contra
+              and Protection
               <br />
               <span className="bg-gradient-to-r from-warning to-destructive bg-clip-text text-transparent">
-                Catástrofes
+                Against Disasters
               </span>
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Sistema de alerta antecipado global que transforma dados EONET da NASA em segurança personalizada usando IA
+              Global early warning system that transforms NASA EONET data into personalized safety using AI
             </p>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 max-w-3xl mx-auto">
               <div className="text-center space-y-1">
                 <p className="text-3xl font-bold text-primary">10+</p>
-                <p className="text-sm text-muted-foreground">Categorias</p>
+                <p className="text-sm text-muted-foreground">Categories</p>
               </div>
               <div className="text-center space-y-1">
                 <p className="text-3xl font-bold text-primary">Real-time</p>
-                <p className="text-sm text-muted-foreground">Dados NASA</p>
+                <p className="text-sm text-muted-foreground">NASA Data</p>
               </div>
               <div className="text-center space-y-1">
-                <p className="text-3xl font-bold text-primary">IA</p>
-                <p className="text-sm text-muted-foreground">Previsão</p>
+                <p className="text-3xl font-bold text-primary">AI</p>
+                <p className="text-sm text-muted-foreground">Prediction</p>
               </div>
               <div className="text-center space-y-1">
                 <p className="text-3xl font-bold text-primary">Global</p>
-                <p className="text-sm text-muted-foreground">Cobertura</p>
+                <p className="text-sm text-muted-foreground">Coverage</p>
               </div>
             </div>
 
@@ -114,14 +114,14 @@ const Index = () => {
                 className="bg-primary hover:bg-primary-glow text-background font-semibold text-lg px-8 py-6 animate-glow-pulse"
               >
                 <Satellite className="mr-2 h-5 w-5" />
-                Começar Gratuitamente
+                Start Free
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="border-primary/20 hover:bg-primary/10 text-lg px-8 py-6"
               >
-                Saiba Mais
+                Learn More
               </Button>
             </div>
           </div>
@@ -132,59 +132,59 @@ const Index = () => {
       <div className="container mx-auto px-4 py-20">
         <div className="text-center mb-16 animate-fade-in">
           <h2 className="text-4xl font-bold mb-4">
-            Como <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Funciona</span>
+            How It <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Works</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Monitoramos eventos climáticos extremos em tempo real através da API EONET da NASA
+            We monitor extreme weather events in real-time through NASA's EONET API
           </p>
         </div>
 
         <div className="mb-12 p-6 bg-card/80 backdrop-blur-sm rounded-lg border border-primary/20 max-w-4xl mx-auto animate-fade-in">
           <h3 className="text-2xl font-bold mb-4 text-center">
             <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              Categorias de Desastres Monitorados
+              Monitored Disaster Categories
             </span>
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-sm">
             <div className="p-3 bg-destructive/10 rounded-lg border border-destructive/20">
-              <p className="font-semibold text-destructive">🔥 Incêndios</p>
-              <p className="text-xs text-muted-foreground">Wildfires</p>
+              <p className="font-semibold text-destructive">🔥 Wildfires</p>
+              <p className="text-xs text-muted-foreground">Forest Fires</p>
             </div>
             <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
-              <p className="font-semibold text-primary">🌊 Inundações</p>
-              <p className="text-xs text-muted-foreground">Floods</p>
+              <p className="font-semibold text-primary">🌊 Floods</p>
+              <p className="text-xs text-muted-foreground">Water Overflow</p>
             </div>
             <div className="p-3 bg-warning/10 rounded-lg border border-warning/20">
-              <p className="font-semibold text-warning">🌪️ Tempestades</p>
-              <p className="text-xs text-muted-foreground">Severe Storms</p>
+              <p className="font-semibold text-warning">🌪️ Storms</p>
+              <p className="text-xs text-muted-foreground">Severe Weather</p>
             </div>
             <div className="p-3 bg-accent/10 rounded-lg border border-accent/20">
-              <p className="font-semibold text-accent">🌋 Vulcões</p>
-              <p className="text-xs text-muted-foreground">Volcanoes</p>
+              <p className="font-semibold text-accent">🌋 Volcanoes</p>
+              <p className="text-xs text-muted-foreground">Eruptions</p>
             </div>
             <div className="p-3 bg-secondary/10 rounded-lg border border-secondary/20">
-              <p className="font-semibold">⚡ Terremotos</p>
-              <p className="text-xs text-muted-foreground">Earthquakes</p>
+              <p className="font-semibold">⚡ Earthquakes</p>
+              <p className="text-xs text-muted-foreground">Seismic Activity</p>
             </div>
             <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
-              <p className="font-semibold">🌡️ Secas</p>
-              <p className="text-xs text-muted-foreground">Droughts</p>
+              <p className="font-semibold">🌡️ Droughts</p>
+              <p className="text-xs text-muted-foreground">Water Scarcity</p>
             </div>
             <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
-              <p className="font-semibold">🏔️ Deslizamentos</p>
-              <p className="text-xs text-muted-foreground">Landslides</p>
+              <p className="font-semibold">🏔️ Landslides</p>
+              <p className="text-xs text-muted-foreground">Ground Movement</p>
             </div>
             <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
-              <p className="font-semibold">❄️ Gelo</p>
+              <p className="font-semibold">❄️ Ice</p>
               <p className="text-xs text-muted-foreground">Sea/Lake Ice</p>
             </div>
             <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
-              <p className="font-semibold">🌫️ Poeira</p>
-              <p className="text-xs text-muted-foreground">Dust & Haze</p>
+              <p className="font-semibold">🌫️ Dust</p>
+              <p className="text-xs text-muted-foreground">Air Quality</p>
             </div>
             <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
-              <p className="font-semibold">⚠️ Outros</p>
-              <p className="text-xs text-muted-foreground">Manmade</p>
+              <p className="font-semibold">⚠️ Other</p>
+              <p className="text-xs text-muted-foreground">Human-Made</p>
             </div>
           </div>
         </div>
@@ -216,17 +216,17 @@ const Index = () => {
         <Card className="border-primary/20 bg-gradient-to-br from-primary/10 to-accent/10 backdrop-blur-sm animate-scale-in">
           <CardContent className="p-12 text-center space-y-6">
             <h2 className="text-4xl font-bold">
-              Pronto para se <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Proteger</span>?
+              Ready to Stay <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Protected</span>?
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Junte-se a milhares de usuários que confiam no Natural Disasters para sua segurança
+              Join thousands of users who trust Natural Disasters for their safety
             </p>
             <Button
               size="lg"
               onClick={() => navigate("/auth")}
               className="bg-primary hover:bg-primary-glow text-background font-semibold text-lg px-8 py-6"
             >
-              Criar Conta Gratuita
+              Create Free Account
             </Button>
           </CardContent>
         </Card>
@@ -235,7 +235,7 @@ const Index = () => {
       {/* Footer */}
       <footer className="border-t border-primary/20 backdrop-blur-sm bg-card/30">
         <div className="container mx-auto px-4 py-8 text-center text-muted-foreground">
-          <p>© 2025 Natural Disasters. Desenvolvido para NASA Space Apps Challenge 2025</p>
+          <p>© 2025 Natural Disasters. Built for NASA Space Apps Challenge 2025</p>
         </div>
       </footer>
     </div>

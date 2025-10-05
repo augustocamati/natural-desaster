@@ -33,7 +33,7 @@ const AlertDetails = ({ alert, open, onOpenChange }: AlertDetailsProps) => {
         <div className="space-y-4 mt-4">
           <div className="flex items-center gap-2">
             <Badge variant={severity === "high" ? "destructive" : "secondary"}>
-              Severidade: {severity === "high" ? "Alta" : severity === "medium" ? "Média" : "Baixa"}
+              Severity: {severity === "high" ? "High" : severity === "medium" ? "Medium" : "Low"}
             </Badge>
           </div>
 
@@ -41,14 +41,14 @@ const AlertDetails = ({ alert, open, onOpenChange }: AlertDetailsProps) => {
             <div className="flex items-center gap-2 text-sm">
               <MapPin className="h-4 w-4 text-primary" />
               <span className="text-muted-foreground">
-                Coordenadas: {latestGeometry?.coordinates[1].toFixed(4)}, {latestGeometry?.coordinates[0].toFixed(4)}
+                Coordinates: {latestGeometry?.coordinates[1].toFixed(4)}, {latestGeometry?.coordinates[0].toFixed(4)}
               </span>
             </div>
             
             <div className="flex items-center gap-2 text-sm">
               <Calendar className="h-4 w-4 text-primary" />
               <span className="text-muted-foreground">
-                Última atualização: {new Date(latestGeometry?.date).toLocaleString('pt-BR')}
+                Last update: {new Date(latestGeometry?.date).toLocaleString('en-US')}
               </span>
             </div>
 
@@ -63,14 +63,14 @@ const AlertDetails = ({ alert, open, onOpenChange }: AlertDetailsProps) => {
 
           {alert.description && (
             <div className="border-t border-primary/10 pt-4">
-              <h4 className="font-semibold mb-2">Descrição:</h4>
+              <h4 className="font-semibold mb-2">Description:</h4>
               <p className="text-sm text-muted-foreground">{alert.description}</p>
             </div>
           )}
 
           {alert.sources && alert.sources.length > 0 && (
             <div className="border-t border-primary/10 pt-4">
-              <h4 className="font-semibold mb-2">Fontes:</h4>
+              <h4 className="font-semibold mb-2">Sources:</h4>
               <div className="space-y-2">
                 {alert.sources.map((source: any, idx: number) => (
                   <Button
@@ -89,38 +89,38 @@ const AlertDetails = ({ alert, open, onOpenChange }: AlertDetailsProps) => {
           )}
 
           <div className="border-t border-primary/10 pt-4">
-            <h4 className="font-semibold mb-2">Recomendações de Segurança:</h4>
+            <h4 className="font-semibold mb-2">Safety Recommendations:</h4>
             <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
               {alert.categories[0]?.id === "floods" && (
                 <>
-                  <li>Evite áreas próximas a rios e córregos</li>
-                  <li>Não dirija por áreas alagadas</li>
-                  <li>Mantenha documentos em local seguro e elevado</li>
-                  <li>Tenha um kit de emergência preparado</li>
+                  <li>Avoid areas near rivers and streams</li>
+                  <li>Do not drive through flooded areas</li>
+                  <li>Keep documents in a safe, elevated location</li>
+                  <li>Have an emergency kit ready</li>
                 </>
               )}
               {alert.categories[0]?.id === "wildfires" && (
                 <>
-                  <li>Mantenha janelas fechadas para evitar fumaça</li>
-                  <li>Prepare-se para evacuação se necessário</li>
-                  <li>Tenha água e documentos à mão</li>
-                  <li>Siga as instruções das autoridades locais</li>
+                  <li>Keep windows closed to avoid smoke</li>
+                  <li>Be ready to evacuate if necessary</li>
+                  <li>Have water and documents at hand</li>
+                  <li>Follow instructions from local authorities</li>
                 </>
               )}
               {alert.categories[0]?.id === "severeStorms" && (
                 <>
-                  <li>Procure abrigo em local seguro</li>
-                  <li>Evite áreas abertas e árvores</li>
-                  <li>Desligue aparelhos eletrônicos da tomada</li>
-                  <li>Mantenha-se informado sobre a evolução da tempestade</li>
+                  <li>Seek shelter in a safe location</li>
+                  <li>Avoid open areas and trees</li>
+                  <li>Unplug electronic devices</li>
+                  <li>Stay informed about storm developments</li>
                 </>
               )}
               {(alert.categories[0]?.id === "earthquakes" || alert.categories[0]?.id === "volcanoes") && (
                 <>
-                  <li>Proteja-se debaixo de móveis resistentes</li>
-                  <li>Afaste-se de janelas e objetos que possam cair</li>
-                  <li>Esteja preparado para réplicas</li>
-                  <li>Tenha um plano de evacuação</li>
+                  <li>Take cover under sturdy furniture</li>
+                  <li>Stay away from windows and falling objects</li>
+                  <li>Be prepared for aftershocks</li>
+                  <li>Have an evacuation plan</li>
                 </>
               )}
             </ul>
@@ -128,9 +128,9 @@ const AlertDetails = ({ alert, open, onOpenChange }: AlertDetailsProps) => {
 
           {alert.geometry.length > 1 && (
             <div className="border-t border-primary/10 pt-4">
-              <h4 className="font-semibold mb-2">Histórico do Evento ({alert.geometry.length} pontos)</h4>
+              <h4 className="font-semibold mb-2">Event History ({alert.geometry.length} points)</h4>
               <p className="text-xs text-muted-foreground">
-                De {new Date(alert.geometry[0].date).toLocaleDateString('pt-BR')} até {new Date(latestGeometry.date).toLocaleDateString('pt-BR')}
+                From {new Date(alert.geometry[0].date).toLocaleDateString('en-US')} to {new Date(latestGeometry.date).toLocaleDateString('en-US')}
               </p>
             </div>
           )}
