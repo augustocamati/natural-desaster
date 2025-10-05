@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Search, MapPin } from 'lucide-react';
+import { Input } from './ui/input';
+import { Button } from './ui/button';
+import { Search } from 'lucide-react';
+import { EONETEvent } from '@/services/api';
 
 interface MapProps {
-  onLocationChange?: (location: { lat: number; lng: number }) => void;
+  events?: EONETEvent[];
 }
 
-const Map = ({ onLocationChange }: MapProps) => {
+const Map = ({ events = [] }: MapProps) => {
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<mapboxgl.Map | null>(null);
-  const marker = useRef<mapboxgl.Marker | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [userLocation, setUserLocation] = useState<[number, number]>([-46.6333, -23.5505]); // Default: São Paulo
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
 
   useEffect(() => {
     // Get user's location
@@ -29,52 +29,81 @@ const Map = ({ onLocationChange }: MapProps) => {
         },
         (error) => {
           console.log('Geolocation error:', error);
+          // Default to world view
+          setUserLocation([-46.6333, -23.5505]);
         }
       );
+    } else {
+      setUserLocation([-46.6333, -23.5505]);
     }
   }, []);
 
   useEffect(() => {
-    if (!mapContainer.current) return;
+    if (!mapContainer.current || map.current || !userLocation) return;
+
+    mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN';
 
     // Initialize map
-    mapboxgl.accessToken = 'YOUR_MAPBOX_TOKEN'; // User needs to add their token
-    
     map.current = new mapboxgl.Map({
       container: mapContainer.current,
       style: 'mapbox://styles/mapbox/dark-v11',
-      center: userLocation,
-      zoom: 10,
+      center: userLocation || [-46.6333, -23.5505],
+      zoom: userLocation ? 10 : 2,
     });
 
     // Add navigation controls
-    map.current.addControl(
-      new mapboxgl.NavigationControl({
-        visualizePitch: true,
-      }),
-      'top-right'
-    );
+    map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
-    // Add user location marker
-    marker.current = new mapboxgl.Marker({ color: '#00f5ff' })
-      .setLngLat(userLocation)
-      .addTo(map.current);
-
-    // Notify parent of location
-    if (onLocationChange) {
-      onLocationChange({ lat: userLocation[1], lng: userLocation[0] });
+    // Add user location marker if available
+    if (userLocation) {
+      new mapboxgl.Marker({ color: '#00ff9d' })
+        .setLngLat(userLocation)
+        .setPopup(new mapboxgl.Popup().setHTML('<p>Sua Localização</p>'))
+        .addTo(map.current);
     }
+  }, [userLocation]);
 
-    return () => {
-      map.current?.remove();
-    };
-  }, [userLocation, onLocationChange]);
+  // Add event markers
+  useEffect(() => {
+    if (!map.current || events.length === 0) return;
+
+    // Remove existing event markers
+    const markers = document.querySelectorAll('.event-marker');
+    markers.forEach(marker => marker.remove());
+
+    // Add new markers for each event
+    events.forEach(event => {
+      const latestGeometry = event.geometry[event.geometry.length - 1];
+      if (!latestGeometry) return;
+
+      const [lng, lat] = latestGeometry.coordinates;
+      
+      const markerColor = event.categories[0]?.id === 'wildfires' ? '#ff4444' :
+                          event.categories[0]?.id === 'floods' ? '#4444ff' :
+                          event.categories[0]?.id === 'severeStorms' ? '#ffaa00' : '#ff00ff';
+
+      new mapboxgl.Marker({ color: markerColor })
+        .setLngLat([lng, lat])
+        .setPopup(
+          new mapboxgl.Popup({ offset: 25 })
+            .setHTML(`
+              <div class="p-2">
+                <h3 class="font-bold text-sm">${event.title}</h3>
+                <p class="text-xs">${event.categories[0]?.title}</p>
+                ${latestGeometry.magnitudeValue ? 
+                  `<p class="text-xs">Magnitude: ${latestGeometry.magnitudeValue} ${latestGeometry.magnitudeUnit}</p>` 
+                  : ''}
+              </div>
+            `)
+        )
+        .addTo(map.current!);
+    });
+  }, [events]);
 
   const handleSearch = async () => {
     if (!searchQuery.trim() || !map.current) return;
 
     try {
-      // Geocoding with Mapbox
       const response = await fetch(
         `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
           searchQuery
@@ -85,22 +114,11 @@ const Map = ({ onLocationChange }: MapProps) => {
       if (data.features && data.features.length > 0) {
         const [lng, lat] = data.features[0].center;
         
-        // Update map view
         map.current.flyTo({
           center: [lng, lat],
           zoom: 12,
           duration: 2000,
         });
-
-        // Update marker
-        if (marker.current) {
-          marker.current.setLngLat([lng, lat]);
-        }
-
-        // Notify parent
-        if (onLocationChange) {
-          onLocationChange({ lat, lng });
-        }
       }
     } catch (error) {
       console.error('Search error:', error);
@@ -126,13 +144,11 @@ const Map = ({ onLocationChange }: MapProps) => {
           size="icon"
           className="border-primary/20 bg-card/95 backdrop-blur-sm hover:bg-primary/10"
         >
-          <MapPin className="h-4 w-4" />
+          <Search className="h-4 w-4" />
         </Button>
       </div>
       
       <div ref={mapContainer} className="absolute inset-0 rounded-lg" />
-      
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-transparent to-background/5 rounded-lg" />
     </div>
   );
 };

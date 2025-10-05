@@ -85,8 +85,27 @@ const Index = () => {
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto">
-              Sistema de alerta antecipado que transforma dados abertos da NASA em segurança personalizada
+              Sistema de alerta antecipado global que transforma dados EONET da NASA em segurança personalizada usando IA
             </p>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 max-w-3xl mx-auto">
+              <div className="text-center space-y-1">
+                <p className="text-3xl font-bold text-primary">10+</p>
+                <p className="text-sm text-muted-foreground">Categorias</p>
+              </div>
+              <div className="text-center space-y-1">
+                <p className="text-3xl font-bold text-primary">Real-time</p>
+                <p className="text-sm text-muted-foreground">Dados NASA</p>
+              </div>
+              <div className="text-center space-y-1">
+                <p className="text-3xl font-bold text-primary">IA</p>
+                <p className="text-sm text-muted-foreground">Previsão</p>
+              </div>
+              <div className="text-center space-y-1">
+                <p className="text-3xl font-bold text-primary">Global</p>
+                <p className="text-sm text-muted-foreground">Cobertura</p>
+              </div>
+            </div>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-8">
               <Button
@@ -116,8 +135,58 @@ const Index = () => {
             Como <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Funciona</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Tecnologia de ponta com dados da NASA para sua segurança
+            Monitoramos eventos climáticos extremos em tempo real através da API EONET da NASA
           </p>
+        </div>
+
+        <div className="mb-12 p-6 bg-card/80 backdrop-blur-sm rounded-lg border border-primary/20 max-w-4xl mx-auto animate-fade-in">
+          <h3 className="text-2xl font-bold mb-4 text-center">
+            <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+              Categorias de Desastres Monitorados
+            </span>
+          </h3>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 text-sm">
+            <div className="p-3 bg-destructive/10 rounded-lg border border-destructive/20">
+              <p className="font-semibold text-destructive">🔥 Incêndios</p>
+              <p className="text-xs text-muted-foreground">Wildfires</p>
+            </div>
+            <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
+              <p className="font-semibold text-primary">🌊 Inundações</p>
+              <p className="text-xs text-muted-foreground">Floods</p>
+            </div>
+            <div className="p-3 bg-warning/10 rounded-lg border border-warning/20">
+              <p className="font-semibold text-warning">🌪️ Tempestades</p>
+              <p className="text-xs text-muted-foreground">Severe Storms</p>
+            </div>
+            <div className="p-3 bg-accent/10 rounded-lg border border-accent/20">
+              <p className="font-semibold text-accent">🌋 Vulcões</p>
+              <p className="text-xs text-muted-foreground">Volcanoes</p>
+            </div>
+            <div className="p-3 bg-secondary/10 rounded-lg border border-secondary/20">
+              <p className="font-semibold">⚡ Terremotos</p>
+              <p className="text-xs text-muted-foreground">Earthquakes</p>
+            </div>
+            <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
+              <p className="font-semibold">🌡️ Secas</p>
+              <p className="text-xs text-muted-foreground">Droughts</p>
+            </div>
+            <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
+              <p className="font-semibold">🏔️ Deslizamentos</p>
+              <p className="text-xs text-muted-foreground">Landslides</p>
+            </div>
+            <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
+              <p className="font-semibold">❄️ Gelo</p>
+              <p className="text-xs text-muted-foreground">Sea/Lake Ice</p>
+            </div>
+            <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
+              <p className="font-semibold">🌫️ Poeira</p>
+              <p className="text-xs text-muted-foreground">Dust & Haze</p>
+            </div>
+            <div className="p-3 bg-muted/20 rounded-lg border border-muted/40">
+              <p className="font-semibold">⚠️ Outros</p>
+              <p className="text-xs text-muted-foreground">Manmade</p>
+            </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">

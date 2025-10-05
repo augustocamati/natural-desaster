@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,10 +11,13 @@ import { Satellite, Shield } from "lucide-react";
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { signIn, signUp } = useAuth();
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,21 +25,14 @@ const Auth = () => {
 
     try {
       if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+        await signIn(email, password);
+        toast({
+          title: "Login realizado!",
+          description: "Bem-vindo de volta",
         });
-        if (error) throw error;
         navigate("/dashboard");
       } else {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
-          },
-        });
-        if (error) throw error;
+        await signUp(name, email, password, location);
         toast({
           title: "Conta criada!",
           description: "Bem-vindo ao Natural Disasters",
@@ -46,7 +42,7 @@ const Auth = () => {
     } catch (error: any) {
       toast({
         title: "Erro",
-        description: error.message,
+        description: error.response?.data?.message || error.message || "Erro ao autenticar",
         variant: "destructive",
       });
     } finally {
@@ -75,6 +71,34 @@ const Auth = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleAuth} className="space-y-4">
+            {!isLogin && (
+              <>
+                <div className="space-y-2">
+                  <Label htmlFor="name">Nome</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Seu nome completo"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="bg-background/50 border-primary/20 focus:border-primary"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="location">Localização</Label>
+                  <Input
+                    id="location"
+                    type="text"
+                    placeholder="Cidade, País"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    required
+                    className="bg-background/50 border-primary/20 focus:border-primary"
+                  />
+                </div>
+              </>
+            )}
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input

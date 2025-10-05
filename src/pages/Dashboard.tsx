@@ -1,57 +1,77 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { nasaService, EONETEvent } from "@/services/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, CloudRain, Flame, Wind, LogOut, MessageSquare } from "lucide-react";
+import { AlertTriangle, CloudRain, Flame, Wind, LogOut, MessageSquare, Loader2 } from "lucide-react";
 import Map from "@/components/Map";
 import AlertDetails from "@/components/AlertDetails";
+import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { isAuthenticated, logout, user } = useAuth();
+  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [selectedAlert, setSelectedAlert] = useState<any>(null);
+  const [events, setEvents] = useState<EONETEvent[]>([]);
+  const [selectedAlert, setSelectedAlert] = useState<EONETEvent | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        navigate("/auth");
+    if (!isAuthenticated) {
+      navigate("/auth");
+      return;
+    }
+
+    const loadEvents = async () => {
+      try {
+        const data = await nasaService.getEvents({ status: 'open', limit: 50 });
+        setEvents(data);
+      } catch (error: any) {
+        toast({
+          title: "Erro",
+          description: "Não foi possível carregar os eventos",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
-    checkAuth();
+    loadEvents();
+  }, [isAuthenticated, navigate, toast]);
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (!session) {
-        navigate("/auth");
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [navigate]);
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
+  const handleLogout = () => {
+    logout();
     navigate("/");
+  };
+
+  const getCategoryIcon = (categoryId: string) => {
+    switch (categoryId) {
+      case 'floods': return CloudRain;
+      case 'wildfires': return Flame;
+      case 'severeStorms': return Wind;
+      default: return AlertTriangle;
+    }
+  };
+
+  const getSeverity = (event: EONETEvent): 'high' | 'medium' | 'low' => {
+    const magnitude = event.geometry[0]?.magnitudeValue;
+    if (!magnitude) return 'low';
+    if (magnitude > 70) return 'high';
+    if (magnitude > 40) return 'medium';
+    return 'low';
   };
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-primary animate-glow-pulse">Carregando...</div>
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
       </div>
     );
   }
-
-  const alerts = [
-    { id: 1, type: "flood", severity: "high", location: "São Paulo, Brasil", icon: CloudRain, color: "primary" },
-    { id: 2, type: "fire", severity: "medium", location: "Califórnia, EUA", icon: Flame, color: "warning" },
-    { id: 3, type: "storm", severity: "low", location: "Flórida, EUA", icon: Wind, color: "accent" },
-  ];
 
   return (
     <div className="min-h-screen bg-background">
@@ -90,34 +110,45 @@ const Dashboard = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {alerts.map((alert, index) => {
-            const Icon = alert.icon;
+          {events.slice(0, 12).map((event, index) => {
+            const Icon = getCategoryIcon(event.categories[0]?.id);
+            const severity = getSeverity(event);
+            const latestGeometry = event.geometry[event.geometry.length - 1];
+            
             return (
               <Card
-                key={alert.id}
+                key={event.id}
                 className="border-primary/20 bg-card/80 backdrop-blur-sm hover:border-primary/40 transition-all animate-scale-in"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <Icon className={`h-8 w-8 text-${alert.color}`} />
+                    <Icon className="h-8 w-8 text-primary" />
                     <Badge
-                      variant={alert.severity === "high" ? "destructive" : "secondary"}
+                      variant={severity === "high" ? "destructive" : "secondary"}
                       className="animate-glow-pulse"
                     >
-                      {alert.severity === "high" ? "Alto" : alert.severity === "medium" ? "Médio" : "Baixo"}
+                      {severity === "high" ? "Alto" : severity === "medium" ? "Médio" : "Baixo"}
                     </Badge>
                   </div>
-                  <CardTitle className="mt-4">{alert.location}</CardTitle>
+                  <CardTitle className="mt-4 text-lg line-clamp-2">{event.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-muted-foreground">
-                    Tipo: {alert.type === "flood" ? "Inundação" : alert.type === "fire" ? "Incêndio" : "Tempestade"}
+                  <p className="text-sm text-muted-foreground mb-2">
+                    Categoria: {event.categories[0]?.title}
+                  </p>
+                  {latestGeometry?.magnitudeValue && (
+                    <p className="text-sm text-muted-foreground mb-2">
+                      Magnitude: {latestGeometry.magnitudeValue} {latestGeometry.magnitudeUnit}
+                    </p>
+                  )}
+                  <p className="text-xs text-muted-foreground">
+                    Última atualização: {new Date(latestGeometry?.date).toLocaleDateString('pt-BR')}
                   </p>
                   <Button 
                     className="w-full mt-4 bg-primary hover:bg-primary-glow text-background"
                     onClick={() => {
-                      setSelectedAlert(alert);
+                      setSelectedAlert(event);
                       setDialogOpen(true);
                     }}
                   >
@@ -138,7 +169,7 @@ const Dashboard = () => {
           </CardHeader>
           <CardContent>
             <div className="h-[500px] rounded-lg overflow-hidden border border-primary/10">
-              <Map />
+              <Map events={events} />
             </div>
           </CardContent>
         </Card>
